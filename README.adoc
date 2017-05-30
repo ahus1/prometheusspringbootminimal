@@ -1,0 +1,66 @@
+# Minimal example on how to setup Spring Boot with Prometheus
+
+## What to expect
+
+Run a Spring Boot application an read metrics from JVM and annotated application methods using a Prometheus endpoint.
+
+## Motivation
+
+There is no minimal example as part of the Prometheus' Java Client available.
+
+## How to Run
+
+To run with maven
+
+    mvn compile spring-boot:run
+
+Open http://localhost:8080 to access the metrics.
+
+## Key bits and pieces
+
+
+1. Add Spring Metrics to the projects (only necessary to collect application metrics)
++
+.pom.xml
+[source,indent=0]
+----
+        <dependency>
+            <groupId>com.ryantenney.metrics</groupId>
+            <artifactId>metrics-spring</artifactId>
+            <version>...</version>
+        </dependency>
+----
+
+2. Configure Spring Boot to enable Metrics and Prometheus
++
+.MetricsApplicationConfig.java
+[source,indent=0]
+----
+@Configuration
+@EnableMetrics(proxyTargetClass = true)
+@EnableSpringBootMetricsCollector
+@EnablePrometheusEndpoint
+public class MetricsApplicationConfig extends MetricsConfigurerAdapter {
+
+    public MetricsApplicationConfig() {
+        DefaultExports.initialize();
+    }
+
+}
+----
+
+3. Collect application metrics at specific methods
++
+.RestEndpoint.java
+[source,indent=0]
+----
+    @Path("countedCall")
+    @GET
+    @Timed(absolute = true, name = "countedCallExample")
+    public Response countedCall() throws InterruptedException {
+        int delay = random.nextInt(200);
+        log.info("method called, waiting {}", delay);
+        Thread.sleep(delay);
+        return Response.ok("waited: " + delay + " ms").build();
+    }
+----
