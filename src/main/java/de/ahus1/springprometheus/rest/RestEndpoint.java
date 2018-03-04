@@ -1,34 +1,35 @@
 package de.ahus1.springprometheus.rest;
 
-import com.codahale.metrics.annotation.Timed;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
 import java.util.Random;
 
 /**
  * @author Alexander Schwartz 2016
  */
-@Component
-@Path("/")
+@RestController
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class RestEndpoint {
+
+    private final ServiceClass serviceClass;
 
     private Random random = new Random();
 
-    @Path("countedCall")
-    @GET
-    @Timed(absolute = true, name = "countedCallExample")
-    public Response countedCall() throws InterruptedException {
+    @GetMapping("/countedCall")
+    @Timed(histogram = true) // customize this to use a histogram
+    public String countedCall() throws InterruptedException {
         int delay = random.nextInt(200);
         log.info("method called, waiting {}", delay);
+        serviceClass.doSomething();
         Thread.sleep(delay);
-        return Response.ok("waited: " + delay + " ms").build();
+        return "waited: " + delay + " ms";
     }
 
 }

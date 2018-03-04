@@ -1,23 +1,32 @@
 package de.ahus1.springprometheus.metrics;
 
-import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
-import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
-import io.prometheus.client.hotspot.DefaultExports;
-import io.prometheus.client.spring.boot.EnablePrometheusEndpoint;
-import io.prometheus.client.spring.boot.EnableSpringBootMetricsCollector;
+import io.micrometer.core.aop.TimedAspect;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.prometheus.PrometheusMeterRegistry;
+import io.prometheus.client.hotspot.GarbageCollectorExports;
+import io.prometheus.client.hotspot.MemoryPoolsExports;
+import io.prometheus.client.hotspot.VersionInfoExports;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Alexander Schwartz 2016.
  */
 @Configuration
-@EnableMetrics(proxyTargetClass = true)
-@EnableSpringBootMetricsCollector
-@EnablePrometheusEndpoint
-public class MetricsApplicationConfig extends MetricsConfigurerAdapter {
+public class MetricsApplicationConfig {
 
-    public MetricsApplicationConfig() {
-        DefaultExports.initialize();
+    // as of now, this aspect needs to be created manually, see
+    // https://github.com/micrometer-metrics/micrometer/issues/361
+    @Bean
+    public TimedAspect timedAspect(MeterRegistry registry) {
+        return new TimedAspect(registry);
+    }
+
+    public MetricsApplicationConfig(PrometheusMeterRegistry prometheusMeterRegistry) {
+        // add existing Prometheus modules as needed
+        new MemoryPoolsExports().register(prometheusMeterRegistry.getPrometheusRegistry());
+        new GarbageCollectorExports().register(prometheusMeterRegistry.getPrometheusRegistry());
+        new VersionInfoExports().register(prometheusMeterRegistry.getPrometheusRegistry());
     }
 
 }
