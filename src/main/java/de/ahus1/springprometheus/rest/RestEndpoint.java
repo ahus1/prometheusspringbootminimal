@@ -25,10 +25,9 @@ public class RestEndpoint {
     @GetMapping("/countedCall")
     @Timed(histogram = true) // customize this to use a histogram
     public String countedCall() throws InterruptedException {
-        int delay = random.nextInt(200);
-        log.info("method called, waiting {}", delay);
-        serviceClass.doSomething();
-        Thread.sleep(delay);
+        int delay = 0;
+        delay += serviceClass.doSomething();
+        delay += serviceClass.callExternal();
         return "waited: " + delay + " ms";
     }
 
