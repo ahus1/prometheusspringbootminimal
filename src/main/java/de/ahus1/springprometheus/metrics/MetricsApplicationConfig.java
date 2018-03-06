@@ -29,6 +29,8 @@ public class MetricsApplicationConfig {
         new GarbageCollectorExports().register(prometheusMeterRegistry.getPrometheusRegistry());
         new VersionInfoExports().register(prometheusMeterRegistry.getPrometheusRegistry());
 
+        new JvmGcMetrics().register(prometheusMeterRegistry.getPrometheusRegistry());
+
         // add prometheus-hystrix module
         HystrixPrometheusMetricsPublisher.builder()
                 .shouldExportDeprecatedMetrics(false)
