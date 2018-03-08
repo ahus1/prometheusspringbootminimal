@@ -19,7 +19,9 @@ public class ServiceClass {
 
     private AtomicInteger atomicInteger = new AtomicInteger();
 
-    @Timed(value = "doSomething", description = "this is doing something")
+    // as of micrometer 1.0.1 histograms are not supported (yet), only percentiles
+    @Timed(value = "doSomething", description = "this is doing something", percentiles = { 0.90, 0.95, 0.99 })
+    // @Timed(value = "doSomething", description = "this is doing something", histogram = true)
     public int doSomething() throws InterruptedException {
         log.info("hi");
         int delay = random.nextInt(200);
@@ -28,7 +30,7 @@ public class ServiceClass {
         return delay;
     }
 
-    @HystrixCommand
+    @HystrixCommand(commandKey = "externalCall", groupKey = "interfaceOne")
     public int callExternal() throws InterruptedException {
         log.info("ho");
         int count = atomicInteger.getAndIncrement();
