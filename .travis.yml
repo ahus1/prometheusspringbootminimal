@@ -1,0 +1,21 @@
+language: java
+jdk:
+- oraclejdk8
+cache:
+  directories:
+  - "$HOME/.m2"
+# as travis calls install and not only package, we remove ourselves from the cached repo
+before_cache:
+- rm -rf $HOME/.m2/repository/de/ahus1/prometheus/spring
+deploy:
+  skip_cleanup: true
+  provider: releases
+  overwrite: true
+  api_key:
+    secure: czRaom5+OIt1I/IpStQmSdRbEAJgGXJjVz7PkKH1yWULgDBjqgh2VmrBKpaJn1P6I1CraXrVC9jXiA84ZMHrMOWZR2McxHhVwz/49cf5zWTIJkQFo8+6OlpEogi543MAqU1fhjtpgQOJ6e6w1MQ3isw9yQIW2yVVSZyihX1ubr/dCM0g4Mp7mTvJ1Y+TTQcJ/LivhUZLY0B8uepYQEF8l6GJo2WOKwIcXuZR/nSBHW0Fw8qDg8EmVCM5tvjuWBDDC12Zk4mxU57WtRrBS/j3ptYh9SBDBHcHuQKfjlq+PpHP6PhxrDyqM5nslAol5J63NNDb0DZB6oINhKmRX7YxDUL8+F83LlbdjSLzJQmMZD+61xHV8Eo6zkgsHbf6eVmGrHz8UUFV0sfZ0rl5HOGRm6tOpx5MK+oZb+FleTUrBbUIgXfP+WmE1h7xsGFMyhDnxdh9+OoVzQgRxVvHhLnc2r0Q5l8R3sXes/ueayKJDPCcwMRr1bdtrwVEfjLlhBbnGBHdLsZBUoRCWKB/UwE9+xCAwMArzMe1HbUgyfFL6+/rnAnAXfcg5IsTVNi2VLrCXpy/37rEEvUv4GUIsJxtQ0oIECCmsWW2RUQz2MtnauZ3x8YCinFYbDh1abKeaVVbMngu6WTSG/qw2vCMVifMhcPueTamZVAcAFrRnPW9el8=
+  file_glob: true
+  file: target/*.jar
+  on:
+    tags: true
+    all_branches: false
+    repo: ahus1/prometheusspringbootminimal
