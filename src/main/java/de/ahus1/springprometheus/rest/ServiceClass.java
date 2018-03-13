@@ -2,7 +2,7 @@ package de.ahus1.springprometheus.rest;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.micrometer.core.annotation.Timed;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
@@ -12,9 +12,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Alexander Schwartz 2018
  */
 @Component
-@Slf4j
 public class ServiceClass {
 
+    private static final Logger log = org.slf4j.LoggerFactory.getLogger(ServiceClass.class);
     private Random random = new Random();
 
     private AtomicInteger atomicInteger = new AtomicInteger();

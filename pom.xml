@@ -59,10 +59,6 @@
                 <configuration>
                     <excludes>
                         <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                        <exclude>
                             <groupId>de.thetaphi</groupId>
                             <artifactId>forbiddenapis</artifactId>
                         </exclude>
@@ -101,12 +97,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-hystrix</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.6</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
