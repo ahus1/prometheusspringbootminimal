@@ -6,7 +6,7 @@ Run a Spring Boot application an read metrics from JVM and annotated application
 
 == Motivation
 
-This is a working example for a minimal Spring-Boot 1.5.x app using Micrometer.io.
+This is a working example for a minimal Spring-Boot 2.0.x app using Micrometer.io.
 
 == How to Run
 

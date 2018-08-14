@@ -9,10 +9,9 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
-        <spring.boot.version>1.5.10.RELEASE</spring.boot.version>
-        <vertx.version>3.4.1</vertx.version>
-        <simpleclient.version>0.2.0</simpleclient.version>
-        <micrometer.version>1.0.1</micrometer.version>
+        <spring.boot.version>2.0.4.RELEASE</spring.boot.version>
+        <simpleclient.version>0.4.0</simpleclient.version>
+        <micrometer.version>1.0.6</micrometer.version>
     </properties>
 
     <dependencyManagement>
@@ -27,7 +26,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Edgware.SR2</version>
+            <version>Finchley.SR1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -56,14 +55,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>de.thetaphi</groupId>
-                            <artifactId>forbiddenapis</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -83,11 +74,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jersey</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>io.prometheus</groupId>
@@ -96,17 +83,11 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-hystrix</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-spring-legacy</artifactId>
-            <version>${micrometer.version}</version>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
-            <version>${micrometer.version}</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -118,44 +99,5 @@
             <version>3.4.0</version>
         </dependency>
     </dependencies>
-
-    <profiles>
-        <profile>
-            <id>docker</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.spotify</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                        <version>0.4.13</version>
-                        <configuration>
-                            <imageName>${project.artifactId}:latest</imageName>
-                            <baseImage>base:latest</baseImage>
-                            <forceTags>true</forceTags>
-                            <!-- use cdata here to avoid line breaks -->
-                            <entryPoint>
-                                <![CDATA[["sh", "-c", "java $JAVA_OPTS -jar /${project.build.finalName}.jar $JAVA_ARGS"]]]>
-                            </entryPoint>
-                            <resources>
-                                <resource>
-                                    <targetPath>/</targetPath>
-                                    <directory>${project.build.directory}</directory>
-                                    <include>${project.build.finalName}.jar</include>
-                                </resource>
-                            </resources>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>
