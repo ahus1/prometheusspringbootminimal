@@ -19,14 +19,15 @@ Open http://localhost:8080 to issue calls to be counted and to access the metric
 == Key bits and pieces
 
 
-. Add Micrometer to the projects (only necessary to collect application metrics)
+. Add Micrometer to the projects.
+Add Actuator starter to let the autoconfiguration create a Prometheus metrics endpoint.
 +
 .pom.xml
 [source,indent=0]
 ----
         <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-spring-legacy</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
             <version>...</version>
         </dependency>
         <dependency>

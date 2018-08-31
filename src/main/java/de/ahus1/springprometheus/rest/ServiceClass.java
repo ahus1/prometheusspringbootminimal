@@ -19,7 +19,8 @@ public class ServiceClass {
 
     private AtomicInteger atomicInteger = new AtomicInteger();
 
-    // as of micrometer 1.0.1 histograms are not supported (yet), only percentiles
+    // as of micrometer 1.0.x histograms are not supported (yet), only percentiles.
+    // Should work from 1.1.x, see https://github.com/micrometer-metrics/micrometer/pull/483
     @Timed(value = "doSomething", description = "this is doing something", percentiles = { 0.90, 0.95, 0.99 })
     // @Timed(value = "doSomething", description = "this is doing something", histogram = true)
     public int doSomething() throws InterruptedException {
