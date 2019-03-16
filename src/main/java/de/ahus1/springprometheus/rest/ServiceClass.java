@@ -25,7 +25,7 @@ public class ServiceClass {
     // @Timed(value = "doSomething", description = "this is doing something", histogram = true)
     public int doSomething() throws InterruptedException {
         log.info("hi");
-        int delay = random.nextInt(200);
+        int delay = (int) Math.sqrt(random.nextInt(200*200));
         log.info("method called, waiting {}", delay);
         Thread.sleep(delay);
         return delay;
@@ -39,7 +39,7 @@ public class ServiceClass {
         if (count % 10 == 0) {
             throw new RuntimeException();
         }
-        int delay = random.nextInt(200);
+        int delay = (int) Math.sqrt(random.nextInt(200*200));
         log.info("method called, waiting {}", delay);
         Thread.sleep(delay);
         return delay;
