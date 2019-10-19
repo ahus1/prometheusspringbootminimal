@@ -1,6 +1,5 @@
 package de.ahus1.springprometheus.metrics;
 
-import com.soundcloud.prometheus.hystrix.HystrixPrometheusMetricsPublisher;
 import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
@@ -25,17 +24,20 @@ public class MetricsApplicationConfig {
 
     public MetricsApplicationConfig(PrometheusMeterRegistry prometheusMeterRegistry) {
         // add existing Prometheus modules as needed
+        // beware: they will be visible in prometheus, but not in any other backend you might connect
         new MemoryPoolsExports().register(prometheusMeterRegistry.getPrometheusRegistry());
         new GarbageCollectorExports().register(prometheusMeterRegistry.getPrometheusRegistry());
         new VersionInfoExports().register(prometheusMeterRegistry.getPrometheusRegistry());
 
         new JvmGcMetrics().register(prometheusMeterRegistry.getPrometheusRegistry());
 
-        // add prometheus-hystrix module
+        /*
+        // add prometheus-hystrix module as a replacement of the built-in micrometer hystrix metrics
         HystrixPrometheusMetricsPublisher.builder()
                 .shouldExportDeprecatedMetrics(false)
                 .withRegistry(prometheusMeterRegistry.getPrometheusRegistry())
                 .buildAndRegister();
+         */
     }
 
 }

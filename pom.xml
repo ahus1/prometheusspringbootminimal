@@ -92,11 +92,14 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
+        <!-- only use this library if you want to replace micrometer's built in hystrix metrics -->
+        <!--
         <dependency>
             <groupId>de.ahus1.prometheus.hystrix</groupId>
             <artifactId>prometheus-hystrix</artifactId>
             <version>4.0.0</version>
         </dependency>
+        -->
     </dependencies>
 
 </project>
